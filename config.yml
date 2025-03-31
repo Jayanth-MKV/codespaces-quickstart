@@ -1,0 +1,28 @@
+recipe: default.v1
+language: en
+pipeline:
+- name: SingleStepLLMCommandGenerator
+  llm:
+    model_group: rasa_command_generation_model
+  flow_retrieval:
+    active: false
+# - name: CompactLLMCommandGenerator
+#   llm:
+#     model_group: gemini_llm
+
+policies:
+- name: FlowPolicy
+# - name: rasa_plus.ml.EnterpriseSearchPolicy
+#   vector_store:
+#     type: "faiss"
+#     source: "./docs"
+- name: EnterpriseSearchPolicy
+  llm:
+    model_group: enterprise_search_generation
+  embeddings:
+    model_group: enterprise_search_embeddings
+  vector_store:
+    type: "faiss"
+    source: "./docs"
+#  - name: EnterpriseSearchPolicy
+assistant_id: 20250310-102140-extremal-arbitration

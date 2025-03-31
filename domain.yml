@@ -1,0 +1,261 @@
+version: "3.1"
+
+session_config:
+  session_expiration_time: 60  # value in minutes, 0 means no timeout
+  carry_over_slots_to_new_session: true
+
+slots:
+  # User identity and profile slots
+  user_name:
+    type: text
+    initial_value: "Sarah Johnson"
+    mappings:
+      - type: from_llm
+  employee_id:
+    type: text
+    initial_value: "EMP001"
+    mappings:
+      - type: from_llm
+  department:
+    type: text
+    mappings:
+      - type: from_llm
+  manager:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  # Leave management slots
+  leave_type:
+    type: categorical
+    values:
+      - annual
+      - sick
+      - personal
+      - other
+    mappings:
+      - type: from_llm
+
+  leave_start_date:
+    type: text
+    mappings:
+      - type: from_llm      
+
+  leave_end_date:
+    type: text
+    mappings:
+      - type: from_llm
+
+  leave_reason:
+    type: text
+    mappings:
+      - type: from_llm
+  leave_status:
+    type: text
+    mappings:
+      - type: from_llm
+  leave_balance:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  # Document slots
+  document_type:
+    type: text
+    mappings:
+      - type: from_llm
+  document_status:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  # Expense slots
+  expense_amount:
+    type: float
+    mappings:
+      - type: from_llm
+  expense_category:
+    type: text
+    mappings:
+      - type: from_llm
+  expense_date:
+    type: text
+    mappings:
+      - type: from_llm
+  expense_description:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  # Onboarding slots
+  onboarding_progress:
+    type: text
+    mappings:
+      - type: from_llm
+  onboarding_next_task:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  # Benefits slots
+  selected_benefit:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  # Policy slots
+  policy_answer:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  # Job search slots
+  job_title:
+    type: text
+    mappings:
+      - type: from_llm
+  job_location:
+    type: text
+    mappings:
+      - type: from_llm
+  job_department:
+    type: text
+    mappings:
+      - type: from_llm
+
+responses:
+  # General responses
+  utter_welcome:
+    - text: "Welcome to HR Connect! How can I assist you today?"
+  
+  # Leave management responses
+  utter_ask_leave_type:
+    - text: "What type of leave would you like to request?"
+      metadata:
+        rephrase: True
+        template: jinja
+      buttons:
+        - title: Annual
+          payload: "annual"
+        - title: Sick
+          payload: "sick"
+        - title: Personal
+          payload: "personal"
+        - title: Other
+          payload: "other"
+  
+  utter_ask_leave_start_date:
+    - text: "What is the first day of your leave?"
+
+  utter_ask_leave_end_date:
+    - text: "What is the last day of your leave?"
+
+  
+  utter_ask_leave_reason:
+    - text: "Could you briefly describe the reason for your leave request?"
+  
+  utter_leave_confirmed:
+    - text: "I've submitted your {leave_type} leave request from {leave_start_date} to {leave_end_date}. Your manager ({manager}) will be notified for approval."
+
+  utter_ask_selected_benefit:
+    - text: "Which specific benefit would you like more information about?"
+
+  utter_ask_expense_amount:
+    - text: "What is the amount of the expense?"
+
+  utter_ask_expense_category:
+    - text: "What category does this expense fall under?"
+
+  utter_ask_expense_date:
+    - text: "When was this expense incurred?"
+
+  utter_ask_expense_description:
+    - text: "Please provide a brief description of the expense."
+  
+  # Document responses
+  utter_ask_document_type:
+    - text: "What type of document would you like to upload? (ID proof, Address proof, Educational certificates, etc.)"
+  
+  utter_document_upload_instructions:
+    - text: "To upload your {document_type}, please use the secure document portal. Select '{document_type}' from the dropdown, choose your file (PDF, JPG, PNG; max 5MB), and click 'Upload'."
+  
+  utter_document_upload_confirmation:
+    - text: "Your {document_type} has been successfully uploaded and securely stored."
+  
+  utter_ask_job_title:
+    - text: "What job title or role are you interested in?"
+
+  utter_ask_job_location:
+    - text: "What is your preferred job location?"
+
+  utter_ask_job_department:
+    - text: "Which department would you like to work in?"
+
+  # Onboarding responses
+  utter_onboarding_welcome:
+    - text: "Welcome to TechCorp, {user_name}! I'm here to help you with your onboarding process."
+  
+  utter_onboarding_checklist:
+    - text: "Here's your personalized onboarding checklist: {onboarding_progress}. What would you like help with first?"
+
+  utter_onboarding_next_task:
+    - text: "Your next task is: {onboarding_next_task}. Would you like assistance with this task?"
+  
+  # IT setup responses
+  utter_it_setup_instructions:
+    - text: "For IT setup, you'll need to: 1) Configure your company email, 2) Install VPN software, 3) Set up multi-factor authentication. Which would you like help with?"
+  
+  utter_email_setup:
+    - text: "To set up your email: 1) Visit portal.techcorp.com, 2) Use your employee ID ({employee_id}) as your username and the temporary password from your welcome email, 3) Follow the prompts to create a permanent password."
+  
+  # Benefits responses
+  utter_benefits_overview:
+    - text: "As a full-time employee, you're eligible for: 1) Health insurance (medical, dental, vision), 2) 401(k) with 4% company match, 3) Life insurance, 4) Wellness program. Which benefit would you like to know more about?"
+  
+  # Expense responses
+  utter_expense_submission_instructions:
+    - text: "For expense claims: 1) Use the TechCorp Expense app, 2) Take photos of receipts, 3) Enter expense details and category, 4) Submit for approval. Expenses must be submitted within 30 days."
+  
+  utter_ask_expense_details:
+    - text: "Please provide the expense amount, category, date, and a brief description."
+  
+  # Policy responses
+  utter_policy_response:
+    - text: "According to our policy: {policy_answer}"
+
+  utter_invalid_date_format:
+    - text: "Please provide the date in YYYY-MM-DD format."
+  
+  utter_end_date_before_start_date:
+    - text: "The end date cannot be before the start date."
+
+  
+  # Fallback response with rephrase
+  utter_free_chitchat_response:
+    - text: "placeholder"
+      metadata:
+        rephrase: True
+        rephrase_prompt: |
+          The following is a conversation with an HR Connect Assistant.
+          The assistant can help employees with HR-related queries and tasks, such as policy questions, leave management, onboarding, benefits, and IT setup.
+          The assistant is helpful, professional, and friendly.
+          The user is making small talk, and the assistant should respond appropriately.
+          Context / previous conversation with the user:
+          {{history}}
+          {{current_input}}
+          Suggested AI Response:
+
+actions:
+  - action_get_leave_balance
+  - action_submit_leave_request
+  - action_verify_documents
+  - action_get_onboarding_status
+  - action_update_onboarding_task
+  - action_get_policy_information
+  - action_get_benefits_information
+  - action_submit_expense
+  - action_get_payslip
+  - action_search_jobs
+  - action_it_support
+  - action_greet_user
+  - action_session_start

@@ -1,0 +1,136 @@
+flows:
+  # greeting_flow:
+  #   description: Greet the user and introduce the HR assistant capabilities
+  #   steps:
+  #     - action: action_greet_user
+
+  # Leave management flows
+  leave_balance_inquiry_flow:
+    description: Help the user check their available leave balance
+    steps:
+      - action: action_get_leave_balance
+
+  leave_request_flow:
+    description: Guide users through the process of requesting leave
+    steps:
+      - collect: leave_type
+        description: Type of leave the user wants to request
+      
+      - collect: leave_start_date
+        description: Start date for the leave request, give in YYYY-MM-DD format. Today is 2025-03-31
+
+      - collect: leave_end_date
+        description: End date for the leave request, give in YYYY-MM-DD format. Tomorrow is 2025-04-01
+      
+      - collect: leave_reason
+        description: Reason for requesting leave
+      
+      - action: action_submit_leave_request
+      - action: utter_leave_confirmed
+        
+
+  # # Policy Q&A flow using RAG
+  # policy_qa_flow:
+  #   description: Answer user questions about company policies using RAG
+  #   steps:
+  #     - action: action_get_policy_information
+  #     - action: utter_policy_response
+        
+
+  # Onboarding flows
+  onboarding_status_flow:
+    description: Check and display the user's onboarding progress and pending tasks
+    steps:
+      - action: action_get_onboarding_status
+      - action: utter_onboarding_checklist
+  
+  onboarding_next_task_flow:
+    description: Display the next onboarding task for the user to complete
+    steps:
+      - action: utter_onboarding_next_task
+        
+
+  onboarding_task_update_flow:
+    description: Mark onboarding tasks as completed and update user progress
+    steps:
+      - action: action_update_onboarding_task
+        
+
+  # IT setup flow
+  it_setup_flow:
+    description: Guide users through IT setup processes like email, VPN, and MFA
+    steps:
+      - action: utter_it_setup_instructions
+      - action: action_it_support
+        
+
+  # Benefits flow
+  benefits_inquiry_flow:
+    description: Provide information about employee benefits and enrollment options
+    steps:
+      - action: utter_benefits_overview
+      - collect: selected_benefit
+        description: The specific benefit the user wants to learn more about
+      
+      - action: action_get_benefits_information
+        
+
+  # Expense submission flow
+  expense_submission_flow:
+    description: Guide users through submitting and tracking expense reimbursements
+    steps:
+      - action: utter_expense_submission_instructions
+      - action: utter_ask_expense_details
+      
+      - collect: expense_amount
+        description: Amount to be reimbursed
+      - collect: expense_category
+        description: Category of expense (travel, meals, etc.)
+      - collect: expense_date
+        description: Date when the expense was incurred
+      - collect: expense_description
+        description: Brief description of the expense
+      
+      - action: action_submit_expense
+        
+
+  # Document upload flow
+  document_upload_flow:
+    description: Help users upload and verify required documents
+    steps:
+      - action: utter_ask_document_type
+      - collect: document_type
+        description: Type of document being uploaded
+      
+      - action: utter_document_upload_instructions
+      - action: action_verify_documents
+      - action: utter_document_upload_confirmation
+        
+
+  # Payslip inquiry flow
+  payslip_inquiry_flow:
+    description: Allow users to securely access and view their payslip information
+    steps:
+      - action: action_get_payslip
+        
+
+  # Job search flow
+  job_search_flow:
+    description: Help users find and apply for internal job openings
+    steps:
+      - collect: job_title
+        description: Job title or role the user is interested in
+      - collect: job_location
+        description: Preferred job location (city, remote, etc.)
+      - collect: job_department
+        description: Department the user wants to work in
+      
+      - action: action_search_jobs
+        
+
+  # Fallback flow for free chitchat
+  chitchat_flow:
+    description: Handle casual conversation and small talk with appropriate responses
+    steps:
+      - action: utter_free_chitchat_response
+        
